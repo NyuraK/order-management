@@ -91,6 +91,7 @@ public class OrderService {
         payment.setCustomerId(order.getCustomerId());
         payment.setOrder(order);
         payment.setPaymentType(paymentType);
+        paymentRepository.save(payment);
         order.setStatus(OrderStatus.PAID);
         return convertToDTO(order);
     }
