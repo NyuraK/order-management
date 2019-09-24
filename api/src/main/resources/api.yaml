@@ -146,7 +146,6 @@ components:
         name:
           description: Name of Order.
           type: string
-          readOnly: true
           maxLength: 100
         customerId:
           type: integer
