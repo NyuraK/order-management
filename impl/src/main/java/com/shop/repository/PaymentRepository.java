@@ -1,9 +1,9 @@
 package com.shop.repository;
 
 import com.shop.model.Payment;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PaymentRepository extends CrudRepository<Payment, Integer> {
+public interface PaymentRepository extends MongoRepository<Payment, String> {
 }

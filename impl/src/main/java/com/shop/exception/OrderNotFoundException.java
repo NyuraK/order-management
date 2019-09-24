@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class OrderNotFoundException extends BaseOrderManagementException {
 
-    private final Integer id;
+    private String id;
 
 
     @Override
     public String getMessage() {
-        return String.format("Order with id %d not found", getId());
+        return String.format("Order with id %s not found", getId());
     }
 }

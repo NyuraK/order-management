@@ -6,10 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class OrderAlreadyPaidException extends BaseOrderManagementException {
-    private final Integer id;
+    private final String id;
 
     @Override
     public String getMessage() {
-        return String.format("Order with id %d was already paid", getId());
+        return String.format("Order with id %s was already paid", getId());
     }
 }
