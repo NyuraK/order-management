@@ -9,14 +9,15 @@ import com.shop.model.Order;
 import com.shop.model.Payment;
 import com.shop.repository.OrderRepository;
 import com.shop.repository.PaymentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
+@Slf4j
 public class OrderService {
     private OrderRepository repository;
     private PaymentRepository paymentRepository;
@@ -28,13 +29,13 @@ public class OrderService {
     }
 
     public OrderDTO getOrder(String id) {
+        log.info("Get order by id {}", id);
         Order order = repository.findById(id).orElse(null);
         if (order != null)
             return convertToDTO(order);
         else
             throw new OrderNotFoundException(id);
     }
-
     private OrderDTO convertToDTO(Order order) {
         return new OrderDTO()
                 .id(order.getId())
@@ -54,23 +55,28 @@ public class OrderService {
     }
 
     public OrderDTO createOrder(OrderDTO orderDTO) {
+        log.info("Create new order");
         Order order = convertToEntity(orderDTO);
         return convertToDTO(repository.save(order));
     }
 
     public void deleteOrder(String id) {
+        log.info("Delete order with id {}", id);
         Order order = repository.findById(id).orElse(null);
-        if (order == null)
+        if (order == null) {
             throw new OrderNotFoundException(id);
+        }
+
         repository.delete(order);
     }
 
     public List<OrderDTO> getAllOrders() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
-                .map(this::convertToDTO).collect(Collectors.toList());
+        log.info("Get all orders");
+        return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public OrderDTO updateOrder(OrderDTO orderDTO) {
+        log.info("Update order with id {}", orderDTO.getId());
         Order order = repository.findById(orderDTO.getId()).orElse(null);
         if (order == null)
             throw new OrderNotFoundException(orderDTO.getId());
@@ -80,6 +86,7 @@ public class OrderService {
     }
 
     public OrderDTO pay(String id, PaymentType paymentType) {
+        log.info("Perform payment for order with id {}", id);
         Order order = repository.findById(id).orElse(null);
         if (order == null)
             throw new OrderNotFoundException(id);
