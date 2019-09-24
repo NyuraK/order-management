@@ -113,8 +113,7 @@ components:
       description: Order ID
       required: true
       schema:
-        type: integer
-      example: 59949
+        type: string
     paymentType:
       name: paymentType
       in: query
@@ -142,7 +141,7 @@ components:
       properties:
         id:
           description: Unique Identifier of Order.
-          type: integer
+          type: string
           readOnly: true
         name:
           description: Name of Order.

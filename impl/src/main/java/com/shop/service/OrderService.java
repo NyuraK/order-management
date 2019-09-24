@@ -12,7 +12,6 @@ import com.shop.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -28,7 +27,7 @@ public class OrderService {
         this.paymentRepository = paymentRepository;
     }
 
-    public OrderDTO getOrder(Integer id) {
+    public OrderDTO getOrder(String id) {
         Order order = repository.findById(id).orElse(null);
         if (order != null)
             return convertToDTO(order);
@@ -59,7 +58,7 @@ public class OrderService {
         return convertToDTO(repository.save(order));
     }
 
-    public void deleteOrder(Integer id) {
+    public void deleteOrder(String id) {
         Order order = repository.findById(id).orElse(null);
         if (order == null)
             throw new OrderNotFoundException(id);
@@ -80,8 +79,7 @@ public class OrderService {
         return convertToDTO(order);
     }
 
-    @Transactional
-    public OrderDTO pay(Integer id, PaymentType paymentType) {
+    public OrderDTO pay(String id, PaymentType paymentType) {
         Order order = repository.findById(id).orElse(null);
         if (order == null)
             throw new OrderNotFoundException(id);
@@ -91,6 +89,7 @@ public class OrderService {
         payment.setCustomerId(order.getCustomerId());
         payment.setOrder(order);
         payment.setPaymentType(paymentType);
+        paymentRepository.save(payment);
         order.setStatus(OrderStatus.PAID);
         return convertToDTO(order);
     }

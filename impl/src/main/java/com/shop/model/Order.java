@@ -6,33 +6,29 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
-@Entity
+@Document(collection = "orders-collection")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(generator = "increment")
-    private Integer id;
+    private String id;
 
-    @Column(name = "customer_id")
     private Integer customerId;
 
-    @Column(name = "status")
     private OrderStatus status;
 
-    @Column(name = "shipping_type")
     private ShippingType shippingType;
 
     @Transient
     private String promocode;
 
-    @Column(name = "total")
     private Float total;
 }

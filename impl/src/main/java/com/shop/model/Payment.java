@@ -5,28 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@Entity
+@Document(collection = "payments-collection")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "payments")
 public class Payment {
     @Id
-    @GeneratedValue(generator = "increment")
-    private Integer id;
+    private String id;
 
-    @OneToOne
-    @JoinColumn(name="id")
     private Order order;
 
-    @Column(name = "customer_id")
     private Integer customerId;
 
-    @Column(name = "payment_type")
     private PaymentType paymentType;
 
 }
