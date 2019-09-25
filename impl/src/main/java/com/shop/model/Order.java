@@ -32,5 +32,5 @@ public class Order {
 
     private Integer paymentId;
 
-    private Float total;
+    private Double total;
 }

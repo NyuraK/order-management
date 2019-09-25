@@ -107,35 +107,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderDto'
-  /dict/orderStatus:
-    get:
-      tags:
-        - Dictionary
-      summary: Get possible order statuses
-      description: Get all order statuses
-      operationId: getAllOrderStatus
-      responses:
-        '200':
-          description: All existing order statuses
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderStatus'
-
-  /dict/shippingTypes:
-    get:
-      tags:
-        - Dictionary
-      summary: Get all possible shipping types
-      description: Get all shipping types
-      operationId: getAllShippingTypes
-      responses:
-        '200':
-          description: All existing shipping types
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShippingType'
 
   /user/{id}:
     get:
@@ -271,7 +242,7 @@ components:
           type: string
         total:
           type: number
-          format: float
+          format: double
         shippingType:
           $ref: '#/components/schemas/ShippingType'
         status:
