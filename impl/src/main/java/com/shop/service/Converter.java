@@ -10,7 +10,8 @@ public class Converter {
                 .customerId(order.getCustomerId())
                 .status(order.getStatus())
                 .shippingType(order.getShippingType())
-                .total(order.getTotal());
+                .total(order.getTotal())
+                .products(order.getProducts());
     }
 
     public static Order convertToEntity(OrderDTO orderDTO) {
@@ -18,7 +19,7 @@ public class Converter {
         order.setCustomerId(orderDTO.getCustomerId());
         order.setShippingType(orderDTO.getShippingType());
         order.setStatus(orderDTO.getStatus());
-        order.setPromocode(orderDTO.getPromocode());
+        order.setProducts(orderDTO.getProducts());
         return order;
     }
 }
