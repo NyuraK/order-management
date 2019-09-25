@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
 
-@Document(collection = "orders-collection")
+@Document(collection = "order-collection")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,7 +22,7 @@ public class Order {
     @Id
     private String id;
 
-    private Integer customerId;
+    private String customerId;
 
     private OrderStatus status;
 
@@ -31,5 +30,7 @@ public class Order {
 
     private Map<String, Integer> products;
 
-    private Float total;
+    private Integer paymentId;
+
+    private Double total;
 }

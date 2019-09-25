@@ -1,14 +1,10 @@
 package com.shop.service;
 
-import com.shop.api.swagger.models.OrderDTO;
-import com.shop.api.swagger.models.OrderStatus;
-import com.shop.api.swagger.models.PaymentType;
-import com.shop.exception.OrderAlreadyPaidException;
+import com.shop.api.swagger.models.OrderDto;
 import com.shop.exception.OrderNotFoundException;
 import com.shop.model.Order;
-import com.shop.model.Payment;
 import com.shop.repository.OrderRepository;
-import com.shop.repository.PaymentRepository;
+import com.shop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,26 +16,26 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderService {
     private OrderRepository repository;
-    private PaymentRepository paymentRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public OrderService(OrderRepository repository, PaymentRepository paymentRepository) {
+    public OrderService(OrderRepository repository, UserRepository userRepository) {
         this.repository = repository;
-        this.paymentRepository = paymentRepository;
+        this.userRepository = userRepository;
     }
 
-    public OrderDTO getOrder(String id) {
+    public OrderDto getOrder(String id) {
         log.info("Get order by id {}", id);
         Order order = repository.findById(id).orElse(null);
         if (order != null)
-            return Converter.convertToDTO(order);
+            return Converter.convertToDto(order);
         else
             throw new OrderNotFoundException(id);
     }
 
-    public OrderDTO createOrder(OrderDTO orderDTO) {
-        Order order = Converter.convertToEntity(orderDTO);
-        return Converter.convertToDTO(repository.save(order));
+    public OrderDto createOrder(OrderDto orderDto) {
+        Order order = Converter.convertToEntity(orderDto);
+        return Converter.convertToDto(repository.save(order));
     }
 
     public void deleteOrder(String id) {
@@ -52,34 +48,18 @@ public class OrderService {
         repository.delete(order);
     }
 
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderDto> getAllOrders() {
         log.info("Get all orders");
-        return repository.findAll().stream().map(Converter::convertToDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(Converter::convertToDto).collect(Collectors.toList());
     }
 
-    public OrderDTO updateOrder(OrderDTO orderDTO) {
-        log.info("Update order with id {}", orderDTO.getId());
-        Order order = repository.findById(orderDTO.getId()).orElse(null);
+    public OrderDto updateOrder(OrderDto orderDto) {
+        log.info("Update order with id {}", orderDto.getId());
+        Order order = repository.findById(orderDto.getId()).orElse(null);
         if (order == null)
-            throw new OrderNotFoundException(orderDTO.getId());
-        order = Converter.convertToEntity(orderDTO);
+            throw new OrderNotFoundException(orderDto.getId());
+        order = Converter.convertToEntity(orderDto);
         repository.save(order);
-        return Converter.convertToDTO(order);
-    }
-
-    public OrderDTO pay(String id, PaymentType paymentType) {
-        log.info("Perform payment for order with id {}", id);
-        Order order = repository.findById(id).orElse(null);
-        if (order == null)
-            throw new OrderNotFoundException(id);
-        if (order.getStatus() == OrderStatus.PAID)
-            throw new OrderAlreadyPaidException(id);
-        Payment payment = new Payment();
-        payment.setCustomerId(order.getCustomerId());
-        payment.setOrder(order);
-        payment.setPaymentType(paymentType);
-        paymentRepository.save(payment);
-        order.setStatus(OrderStatus.PAID);
-        return Converter.convertToDTO(order);
+        return Converter.convertToDto(order);
     }
 }
