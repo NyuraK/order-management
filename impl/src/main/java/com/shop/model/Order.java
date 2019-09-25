@@ -1,6 +1,7 @@
 package com.shop.model;
 
 import com.shop.api.swagger.models.OrderStatus;
+import com.shop.api.swagger.models.PaymentType;
 import com.shop.api.swagger.models.ShippingType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,8 @@ public class Order {
     private ShippingType shippingType;
 
     private Map<String, Integer> products;
+
+    private Integer paymentId;
 
     private Float total;
 }

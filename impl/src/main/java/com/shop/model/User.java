@@ -8,19 +8,19 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "payments-collection")
+@Document(collection = "users-collection")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Payment {
+public class User {
     @Id
     private String id;
 
-    private Order order;
+    private String orderId;
 
-    private Integer customerId;
+    private String name;
 
-    private PaymentType paymentType;
+    private String contact;
 
 }

@@ -7,6 +7,9 @@ servers:
 tags:
   - name: Order Management
     description: Operations with Order entities
+  - name: User Managment
+    description: Operations with users
+  - name: Dictionary
 paths:
   /order:
     post:
@@ -23,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                $ref: '#/components/schemas/OrderDto'
   /order/{id}:
     get:
       tags:
@@ -35,11 +38,11 @@ paths:
         - $ref: '#/components/parameters/id'
       responses:
         '200':
-          description: Ok. Order succesfully returned
+          description: Ok. Order successfully returned
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                $ref: '#/components/schemas/OrderDto'
         '404':
           description: Order not found
     put:
@@ -54,11 +57,11 @@ paths:
         $ref: '#/components/requestBodies/OrderRequest'
       responses:
         '200':
-          description: Ok. Updated order succesfully returned
+          description: Ok. Updated order successfully returned
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                $ref: '#/components/schemas/OrderDto'
     delete:
       tags:
         - Order Management
@@ -69,7 +72,7 @@ paths:
         - $ref: '#/components/parameters/id'
       responses:
         '200':
-          description: Ok. Order succesfully deleted
+          description: Ok. Order successfully deleted
 
   /orders:
     get:
@@ -86,7 +89,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OrderDTO'
+                  $ref: '#/components/schemas/OrderDto'
 
   /order/{id}/payment:
     post:
@@ -96,47 +99,146 @@ paths:
       description: Performs payment
       parameters:
         - $ref: '#/components/parameters/id'
-        - $ref: '#/components/parameters/paymentType'
       operationId: pay
       responses:
         '200':
-          description: Ok. Order is succesfully paid
+          description: Ok. Order is successfully paid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                $ref: '#/components/schemas/OrderDto'
+  /dict/orderStatus:
+    get:
+      tags:
+        - Dictionary
+      summary: Get possible order statuses
+      description: Get all order statuses
+      operationId: getAllOrderStatus
+      responses:
+        '200':
+          description: All existing order statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStatus'
+
+  /dict/shippingTypes:
+    get:
+      tags:
+        - Dictionary
+      summary: Get all possible shipping types
+      description: Get all shipping types
+      operationId: getAllShippingTypes
+      responses:
+        '200':
+          description: All existing shipping types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingType'
+
+  /user/{id}:
+    get:
+      tags:
+        - User Management
+      summary: Get User
+      description: Get User by id
+      operationId: getUserById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: User not found
+    put:
+      tags:
+        - User Management
+      summary: Add User
+      description: Update User
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        $ref: '#/components/requestBodies/UserRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    delete:
+      tags:
+        - User Management
+      summary: Delete User
+      description: Delete User
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Ok. User successfully deleted
+
+  /user:
+    post:
+      tags:
+        - User Management
+      summary: Add User
+      description: Add User
+      operationId: addUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserRequest'
+      responses:
+        '200':
+          description: Added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    get:
+      tags:
+        - User Management
+      summary: Get Users
+      description: Get all Users
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
 components:
   parameters:
     id:
       name: id
       in: path
-      description: Order ID
+      description: Order (or User) ID
       required: true
       schema:
         type: string
-    paymentType:
-      name: paymentType
-      in: query
-      description: Payment Type
-      required: true
-      schema:
-        $ref: '#/components/schemas/PaymentType'
-
   requestBodies:
     OrderRequest:
       description: Order request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OrderDTO'
-    PaymentRequest:
-      description: Payment request
+            $ref: '#/components/schemas/OrderDto'
+    UserRequest:
+      description: User request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PaymentType'
+            $ref: '#/components/schemas/UserDto'
   schemas:
-    OrderDTO:
+    OrderDto:
       type: object
       properties:
         id:
@@ -160,6 +262,8 @@ components:
           type: object
           additionalProperties:
             type: integer
+        paymentId:
+          type: integer
       required:
         - name
         - customerId
@@ -167,6 +271,26 @@ components:
         - shippingType
         - status
         - products
+    UserDto:
+      type: object
+      properties:
+        id:
+          description: Unique Identifier of User
+          type: string
+          readOnly: true
+        name:
+          description: Name of User.
+          type: string
+          maxLength: 100
+        contact:
+          description: Contact of User.
+          type: string
+          maxLength: 100
+        orders:
+          description: List of User's orders
+          type: array
+          items:
+            type: string
 
     ShippingType:
       type: string
@@ -180,10 +304,4 @@ components:
         - IN_PROGRESS
         - DELIVERED
         - PAID
-
-    PaymentType:
-      type: string
-      enum:
-        - CASH
-        - CARD
-        - CARD_ONLINE
+        - COLLECTING
