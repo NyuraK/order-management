@@ -25,11 +25,18 @@ class Converter {
         return order;
     }
 
-    static UserDto convertToDto(User entity) {
-        return new UserDto();
+    static UserDto convertToDto(User user) {
+        return new UserDto()
+                .id(user.getId())
+                .name(user.getName())
+                .contact(user.getContact());
     }
 
-    static User convertToEntity(UserDto dto) {
-        return new User();
+    static User convertToEntity(UserDto userDto) {
+        User user = new User();
+        user.setContact(userDto.getContact());
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
+        return user;
     }
 }

@@ -215,6 +215,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserDto'
+  /user/{id}/orders:
+    get:
+      tags:
+        - User Management
+      summary: Get User's orders
+      description: Return all User's orders
+      operationId: getAllUserOrders
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDto'
 components:
   parameters:
     id:
@@ -250,7 +268,7 @@ components:
           type: string
           maxLength: 100
         customerId:
-          type: integer
+          type: string
         total:
           type: number
           format: float
