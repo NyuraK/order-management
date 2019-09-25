@@ -146,12 +146,9 @@ components:
         name:
           description: Name of Order.
           type: string
-          readOnly: true
           maxLength: 100
         customerId:
           type: integer
-        promocode:
-          type: string
         total:
           type: number
           format: float
@@ -159,12 +156,17 @@ components:
           $ref: '#/components/schemas/ShippingType'
         status:
           $ref: '#/components/schemas/OrderStatus'
+        products:
+          type: object
+          additionalProperties:
+            type: integer
       required:
         - name
         - customerId
         - total
         - shippingType
         - status
+        - products
 
     ShippingType:
       type: string

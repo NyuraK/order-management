@@ -32,32 +32,14 @@ public class OrderService {
         log.info("Get order by id {}", id);
         Order order = repository.findById(id).orElse(null);
         if (order != null)
-            return convertToDTO(order);
+            return Converter.convertToDTO(order);
         else
             throw new OrderNotFoundException(id);
     }
-    private OrderDTO convertToDTO(Order order) {
-        return new OrderDTO()
-                .id(order.getId())
-                .customerId(order.getCustomerId())
-                .status(order.getStatus())
-                .shippingType(order.getShippingType())
-                .total(order.getTotal());
-    }
-
-    private Order convertToEntity(OrderDTO orderDTO) {
-        Order order = new Order();
-        order.setCustomerId(orderDTO.getCustomerId());
-        order.setShippingType(orderDTO.getShippingType());
-        order.setStatus(orderDTO.getStatus());
-        order.setPromocode(orderDTO.getPromocode());
-        return order;
-    }
 
     public OrderDTO createOrder(OrderDTO orderDTO) {
-        log.info("Create new order");
-        Order order = convertToEntity(orderDTO);
-        return convertToDTO(repository.save(order));
+        Order order = Converter.convertToEntity(orderDTO);
+        return Converter.convertToDTO(repository.save(order));
     }
 
     public void deleteOrder(String id) {
@@ -72,7 +54,7 @@ public class OrderService {
 
     public List<OrderDTO> getAllOrders() {
         log.info("Get all orders");
-        return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(Converter::convertToDTO).collect(Collectors.toList());
     }
 
     public OrderDTO updateOrder(OrderDTO orderDTO) {
@@ -80,9 +62,9 @@ public class OrderService {
         Order order = repository.findById(orderDTO.getId()).orElse(null);
         if (order == null)
             throw new OrderNotFoundException(orderDTO.getId());
-        order = convertToEntity(orderDTO);
+        order = Converter.convertToEntity(orderDTO);
         repository.save(order);
-        return convertToDTO(order);
+        return Converter.convertToDTO(order);
     }
 
     public OrderDTO pay(String id, PaymentType paymentType) {
@@ -98,6 +80,6 @@ public class OrderService {
         payment.setPaymentType(paymentType);
         paymentRepository.save(payment);
         order.setStatus(OrderStatus.PAID);
-        return convertToDTO(order);
+        return Converter.convertToDTO(order);
     }
 }
