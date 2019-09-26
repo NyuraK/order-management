@@ -25,7 +25,7 @@ public class ErrorHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = OrderAlreadyPaidException.class)
+    @ExceptionHandler(value = UserNotFoundException.class)
     public ResponseEntity<?> handleException(UserNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
