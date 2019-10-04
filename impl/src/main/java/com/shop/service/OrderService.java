@@ -10,6 +10,7 @@ import com.shop.model.Payment;
 import com.shop.repository.OrderRepository;
 import com.shop.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class OrderService {
     }
 
     public List<OrderDTO> getAllOrders() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
+        return repository.findAll().stream()
                 .map(Converter::convertToDTO).collect(Collectors.toList());
     }
 
@@ -74,5 +75,11 @@ public class OrderService {
         paymentRepository.save(payment);
         order.setStatus(OrderStatus.PAID);
         return Converter.convertToDTO(order);
+    }
+
+    public Double getTotal(String id) {
+//        Order order = repository.findById(id);
+//        return .ifPresent(getTotal()).;
+        return Double.valueOf(9.6);
     }
 }

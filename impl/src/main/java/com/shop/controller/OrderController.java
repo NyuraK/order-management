@@ -54,4 +54,9 @@ public class OrderController implements OrderManagementApi {
     public ResponseEntity<OrderDTO> pay(String id, PaymentType paymentType) {
         return ResponseEntity.ok(service.pay(id, paymentType));
     }
+
+    @Override
+    public ResponseEntity<Double> getOrderTotal(String id) {
+        return ResponseEntity.ok(service.getTotal(id));
+    }
 }

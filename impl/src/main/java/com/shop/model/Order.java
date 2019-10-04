@@ -31,5 +31,5 @@ public class Order {
 
     private Map<String, Integer> products;
 
-    private Float total;
+    private Double total;
 }

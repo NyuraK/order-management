@@ -88,6 +88,24 @@ paths:
                 items:
                   $ref: '#/components/schemas/OrderDTO'
 
+  /order/{id}/total:
+    get:
+      tags:
+        - Order Management
+      summary: Get order total
+      description: Get order total
+      operationId: getOrderTotal
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: All existing orders
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+
   /order/{id}/payment:
     post:
       tags:
