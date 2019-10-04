@@ -11,7 +11,7 @@ tags:
     description: Operations with users
   - name: Dictionary
 paths:
-  /order:
+  /orders:
     post:
       tags:
         - Order Management
@@ -27,7 +27,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderDto'
-  /order/{id}:
+    get:
+      tags:
+        - Order Management
+      summary: Get all orders
+      description: Get all orders
+      operationId: getAllOrders
+      responses:
+        '200':
+          description: All existing orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDto'
+  /orders/{id}:
     get:
       tags:
         - Order Management
@@ -74,41 +89,7 @@ paths:
         '200':
           description: Ok. Order successfully deleted
 
-  /orders:
-    get:
-      tags:
-        - Order Management
-      summary: Get all orders
-      description: Get all orders
-      operationId: getAllOrders
-      responses:
-        '200':
-          description: All existing orders
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderDto'
-
-  /order/{id}/payment:
-    post:
-      tags:
-        - Order management
-      summary: Pay for the order
-      description: Performs payment
-      parameters:
-        - $ref: '#/components/parameters/id'
-      operationId: pay
-      responses:
-        '200':
-          description: Ok. Order is successfully paid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderDto'
-
-  /user/{id}:
+  /users/{id}:
     get:
       tags:
         - User Management
@@ -155,7 +136,7 @@ paths:
         '200':
           description: Ok. User successfully deleted
 
-  /user:
+  /users:
     post:
       tags:
         - User Management
@@ -186,7 +167,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserDto'
-  /user/{id}/orders:
+  /users/{id}/orders:
     get:
       tags:
         - User Management
