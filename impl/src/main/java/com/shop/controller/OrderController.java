@@ -2,8 +2,7 @@ package com.shop.controller;
 
 
 import com.shop.api.swagger.controllers.OrderManagementApi;
-import com.shop.api.swagger.models.OrderDTO;
-import com.shop.api.swagger.models.PaymentType;
+import com.shop.api.swagger.models.OrderDto;
 import com.shop.service.OrderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,12 @@ public class OrderController implements OrderManagementApi {
     }
 
     @Override
-    public ResponseEntity<OrderDTO> create(OrderDTO orderDTO) {
-        return ResponseEntity.ok(service.createOrder(orderDTO));
+    public ResponseEntity<OrderDto> create(OrderDto orderDto) {
+        return ResponseEntity.ok(service.createOrder(orderDto));
     }
 
     @Override
-    public ResponseEntity<OrderDTO> get(String id) {
+    public ResponseEntity<OrderDto> get(String id) {
         return ResponseEntity.ok(service.getOrder(id));
     }
 
@@ -41,18 +40,13 @@ public class OrderController implements OrderManagementApi {
     }
 
     @Override
-    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
         return ResponseEntity.ok(service.getAllOrders());
     }
 
     @Override
-    public ResponseEntity<OrderDTO> update(String id, OrderDTO orderDTO) {
-        return ResponseEntity.ok(service.updateOrder(orderDTO));
-    }
-
-    @Override
-    public ResponseEntity<OrderDTO> pay(String id, PaymentType paymentType) {
-        return ResponseEntity.ok(service.pay(id, paymentType));
+    public ResponseEntity<OrderDto> update(String id, OrderDto orderDto) {
+        return ResponseEntity.ok(service.updateOrder(orderDto));
     }
 
     @Override
