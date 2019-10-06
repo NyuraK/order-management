@@ -10,12 +10,11 @@ import com.shop.model.Payment;
 import com.shop.repository.OrderRepository;
 import com.shop.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -78,8 +77,10 @@ public class OrderService {
     }
 
     public Double getTotal(String id) {
-//        Order order = repository.findById(id);
-//        return .ifPresent(getTotal()).;
-        return Double.valueOf(9.6);
+        Optional<Order> order = repository.findById(id);
+        if (order.isPresent()) {
+            return order.get().getTotal();
+        }
+        throw new OrderNotFoundException(id);
     }
 }

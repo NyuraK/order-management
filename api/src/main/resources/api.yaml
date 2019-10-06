@@ -169,7 +169,7 @@ components:
           type: integer
         total:
           type: number
-          format: float
+          format: double
         shippingType:
           $ref: '#/components/schemas/ShippingType'
         status:
