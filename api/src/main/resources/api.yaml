@@ -292,3 +292,11 @@ components:
         - DELIVERED
         - PAID
         - COLLECTING
+
+    PaidOrderMessage:
+      type: object
+      properties:
+        orderId:
+          type: string
+        paymentId:
+          type: string
