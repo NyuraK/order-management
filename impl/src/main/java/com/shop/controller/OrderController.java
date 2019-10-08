@@ -2,6 +2,7 @@ package com.shop.controller;
 
 
 import com.shop.api.swagger.controllers.OrderManagementApi;
+import com.shop.api.swagger.models.FullOrderDto;
 import com.shop.api.swagger.models.OrderDto;
 import com.shop.service.OrderService;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class OrderController implements OrderManagementApi {
     }
 
     @Override
-    public ResponseEntity<OrderDto> get(String id) {
+    public ResponseEntity<FullOrderDto> get(String id) {
         return ResponseEntity.ok(service.getOrder(id));
     }
 
