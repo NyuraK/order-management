@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDto'
+                $ref: '#/components/schemas/FullOrderDto'
         '404':
           description: Order not found
     put:
@@ -275,3 +275,62 @@ components:
         - DELIVERED
         - PAID
         - COLLECTING
+
+    FullOrderDto:
+      OrderDto:
+        type: object
+        properties:
+          id:
+            description: Unique Identifier of Order.
+            type: string
+            readOnly: true
+          name:
+            description: Name of Order.
+            type: string
+            maxLength: 100
+          customerId:
+            type: string
+          total:
+            type: number
+            format: double
+          shippingType:
+            $ref: '#/components/schemas/ShippingType'
+          status:
+            $ref: '#/components/schemas/OrderStatus'
+          products:
+            $ref: '#/components/schemas/ProductDto'
+          paymentId:
+            type: integer
+        required:
+          - name
+          - customerId
+          - total
+          - shippingType
+          - status
+          - products
+
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          description: Unique Identifier of Product.
+          type: string
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        name:
+          description: Name of Product.
+          type: string
+          readOnly: true
+          maxLength: 100
+        cost:
+          description: Cost of Product.
+          type: number
+          format: double
+          readOnly: true
+        amount:
+          description: Amount of Product.
+          type: integer
+          format: int32
+          readOnly: true
