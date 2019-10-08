@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-service")
+@RequestMapping("${api.prefix}")
 @Api(tags = "Order Management")
 public class OrderController implements OrderManagementApi {
     private OrderService service;

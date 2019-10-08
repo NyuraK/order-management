@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-service")
+@RequestMapping("${api.prefix}")
 @Api(tags = "User Management")
 public class UserController implements UserManagementApi {
     private UserService service;
