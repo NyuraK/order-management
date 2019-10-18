@@ -35,7 +35,6 @@ class Converter {
     static User convertToEntity(UserDto userDto) {
         User user = new User();
         user.setContact(userDto.getContact());
-        user.setId(userDto.getId());
         user.setName(userDto.getName());
         return user;
     }

@@ -22,14 +22,12 @@ public class UserService {
     @Autowired
     public UserService(UserRepository repository, OrderRepository orderRepository) {
         this.repository = repository;
-        this.orderRepository=orderRepository;
+        this.orderRepository = orderRepository;
     }
 
     public UserDto getUser(String id) {
         log.info("Get user by id {}", id);
-        User user = repository.findById(id).orElse(null);
-        if (user==null)
-            throw new UserNotFoundException(id);
+        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return Converter.convertToDto(user);
     }
 
@@ -45,18 +43,15 @@ public class UserService {
     }
 
     public UserDto updateUser(UserDto userDto) {
-        log.info("Update yser with id {}", userDto.getId());
-        User user = repository.findById(userDto.getId()).orElse(null);
-        if (user == null) throw new UserNotFoundException(userDto.getId());
-        user = Converter.convertToEntity(userDto);
-        repository.save(user);
+        log.info("Update user with id {}", userDto.getId());
+        User user = repository.findById(userDto.getId()).orElseThrow(() -> new UserNotFoundException(userDto.getId()));
+        repository.save(Converter.convertToEntity(userDto));
         return Converter.convertToDto(user);
     }
 
     public void deleteUser(String id) {
         log.info("Delete user with id {}", id);
-        User user = repository.findById(id).orElse(null);
-        if (user == null) throw new UserNotFoundException(id);
+        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         repository.delete(user);
     }
 
