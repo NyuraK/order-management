@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/order-service")
@@ -41,6 +42,7 @@ public class UserController implements UserManagementApi {
 
     @Override
     public ResponseEntity<UserDto> updateUser(String id, UserDto userDto) {
+        Objects.requireNonNull(userDto);
         return ResponseEntity.ok(service.updateUser(userDto));
     }
 
