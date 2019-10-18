@@ -7,7 +7,6 @@ import com.shop.client.ProductServiceClient;
 import com.shop.exception.OrderNotFoundException;
 import com.shop.model.Order;
 import com.shop.repository.OrderRepository;
-import com.shop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,25 +18,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderService {
     private final OrderRepository repository;
-    private final UserRepository userRepository;
     private final ProductServiceClient client;
 
     @Autowired
-    public OrderService(OrderRepository repository, UserRepository userRepository, ProductServiceClient client) {
+    public OrderService(OrderRepository repository, ProductServiceClient client) {
         this.repository = repository;
-        this.userRepository = userRepository;
         this.client = client;
     }
 
     public FullOrderDto getOrder(String id) {
         log.info("Get order by id {}", id);
-        Order order = repository.findById(id).orElse(null);
-        if (order != null) {
-            List<ProductDto> products = client.getProducts();
-            return Converter.convertToFullOrderDto(order, products);
-        }
-        else
-            throw new OrderNotFoundException(id);
+        Order order = repository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
+        return Converter.convertToFullOrderDto(order, client.getProducts(order.getProducts().keySet()));
     }
 
     public OrderDto createOrder(OrderDto orderDto) {
@@ -47,11 +39,7 @@ public class OrderService {
 
     public void deleteOrder(String id) {
         log.info("Delete order with id {}", id);
-        Order order = repository.findById(id).orElse(null);
-        if (order == null) {
-            throw new OrderNotFoundException(id);
-        }
-
+        Order order = repository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         repository.delete(order);
     }
 
@@ -62,11 +50,8 @@ public class OrderService {
 
     public OrderDto updateOrder(OrderDto orderDto) {
         log.info("Update order with id {}", orderDto.getId());
-        Order order = repository.findById(orderDto.getId()).orElse(null);
-        if (order == null)
-            throw new OrderNotFoundException(orderDto.getId());
-        order = Converter.convertToEntity(orderDto);
-        repository.save(order);
+        Order order = repository.findById(orderDto.getId()).orElseThrow(() -> new OrderNotFoundException(orderDto.getId()));
+        repository.save(Converter.convertToEntity(orderDto));
         return Converter.convertToDto(order);
     }
 }

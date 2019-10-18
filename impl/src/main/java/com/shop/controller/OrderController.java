@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/order-service")
@@ -26,6 +27,7 @@ public class OrderController implements OrderManagementApi {
 
     @Override
     public ResponseEntity<OrderDto> create(OrderDto orderDto) {
+        Objects.requireNonNull(orderDto);
         return ResponseEntity.ok(service.createOrder(orderDto));
     }
 
@@ -47,6 +49,7 @@ public class OrderController implements OrderManagementApi {
 
     @Override
     public ResponseEntity<OrderDto> update(String id, OrderDto orderDto) {
+        Objects.requireNonNull(orderDto);
         return ResponseEntity.ok(service.updateOrder(orderDto));
     }
 

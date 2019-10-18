@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.shop.config.RestTemplateConfig.LOCALHOST_URL;
 
@@ -31,10 +32,10 @@ public class ProductServiceClient {
         this.restTemplate = restTemplate;
     }
 
-    public List<ProductDto> getProducts() {
+    public List<ProductDto> getProducts(Set<String> productsIds) {
         try {
-            ResponseEntity<List<ProductDto>> response = restTemplate.exchange(String.format(LOCALHOST_URL, port, prefix) + "/products",
-                    HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDto>>() {});
+            ResponseEntity<List<ProductDto>> response = restTemplate.exchange(String.format(LOCALHOST_URL, port, prefix) + "/products?ids={}",
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDto>>() {}, productsIds);
             return response.getBody();
         } catch (HttpClientErrorException e) {
             log.warn(e.getLocalizedMessage());
