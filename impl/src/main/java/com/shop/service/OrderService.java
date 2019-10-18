@@ -1,6 +1,7 @@
 package com.shop.service;
 
 import com.shop.api.swagger.models.OrderDto;
+import com.shop.client.ProductServiceSender;
 import com.shop.exception.OrderNotFoundException;
 import com.shop.model.Order;
 import com.shop.repository.OrderRepository;
@@ -15,11 +16,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class OrderService {
-    private OrderRepository repository;
+    private final OrderRepository repository;
+    private final ProductServiceSender productServiceSender;
 
     @Autowired
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrderRepository repository, ProductServiceSender productServiceSender) {
         this.repository = repository;
+        this.productServiceSender = productServiceSender;
     }
 
     public OrderDto getOrder(String id) {
@@ -64,5 +67,6 @@ public class OrderService {
         Order order = repository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));
         order.setPaymentId(paymentId);
         repository.save(order);
+        productServiceSender.sendMessage(order.getProducts());
     }
 }

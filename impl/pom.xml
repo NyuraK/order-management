@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>${rabbirmq.version}</version>
+            <version>${rabbitmq.version}</version>
         </dependency>
     </dependencies>
     <build>

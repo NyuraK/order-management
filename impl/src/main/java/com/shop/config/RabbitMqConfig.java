@@ -21,6 +21,13 @@ public class RabbitMqConfig {
     @Value("${rabbitmq.payment.routingKey}")
     private String routingKey;
 
+    @Value("${rabbitmq.products.queue}")
+    private String productQueue;
+
+    @Value("${rabbitmq.products.routingKey}")
+    private String productRoutingKey;
+
+
     @Bean
     Queue queue() {
         return new Queue(queue, false);
@@ -32,8 +39,18 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
+    Binding orderBinding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    Queue productQueue() {
+        return new Queue(productQueue, false);
+    }
+
+    @Bean
+    Binding productBinding(Queue productQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(productQueue).to(exchange).with(routingKey);
     }
 
     @Bean

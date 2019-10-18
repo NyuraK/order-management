@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <lombok.version>1.18.8</lombok.version>
-        <rabbirmq.version>2.1.9.RELEASE</rabbirmq.version>
+        <rabbitmq.version>2.1.1.RELEASE</rabbitmq.version>
     </properties>
 
     <dependencies>

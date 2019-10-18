@@ -300,3 +300,11 @@ components:
           type: string
         paymentId:
           type: integer
+
+    PaidProductsMessage:
+      type: object
+      properties:
+        products:
+          type: string
+          additionalProperties:
+            type: integer
