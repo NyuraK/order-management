@@ -31,4 +31,6 @@ public class Order {
     private Map<String, Integer> products;
 
     private Double total;
+
+    private Integer paymentId;
 }

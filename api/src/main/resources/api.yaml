@@ -299,4 +299,4 @@ components:
         orderId:
           type: string
         paymentId:
-          type: string
+          type: integer

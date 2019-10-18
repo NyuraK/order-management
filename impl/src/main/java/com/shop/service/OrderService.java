@@ -59,4 +59,10 @@ public class OrderService {
         }
         throw new OrderNotFoundException(id);
     }
+
+    public void paidOrder(String orderId, Integer paymentId) {
+        Order order = repository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));
+        order.setPaymentId(paymentId);
+        repository.save(order);
+    }
 }
