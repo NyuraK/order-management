@@ -34,7 +34,7 @@ public class ProductServiceClient {
 
     public List<ProductDto> getProducts(Set<String> productsIds) {
         try {
-            ResponseEntity<List<ProductDto>> response = restTemplate.exchange(String.format(LOCALHOST_URL, port, prefix) + "/products?ids={}",
+            ResponseEntity<List<ProductDto>> response = restTemplate.exchange(String.format(LOCALHOST_URL, port, prefix) + "/products?list={}",
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDto>>() {}, productsIds);
             return response.getBody();
         } catch (HttpClientErrorException e) {
