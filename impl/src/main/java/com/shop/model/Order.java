@@ -30,7 +30,7 @@ public class Order {
 
     private Map<String, Integer> products;
 
-    private Integer paymentId;
-
     private Double total;
+
+    private Integer paymentId;
 }

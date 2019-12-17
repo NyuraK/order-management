@@ -9,7 +9,6 @@ tags:
     description: Operations with Order entities
   - name: User Managment
     description: Operations with users
-  - name: Dictionary
 paths:
   /orders:
     post:
@@ -57,7 +56,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDto'
+                $ref: '#/components/schemas/FullOrderDto'
         '404':
           description: Order not found
     put:
@@ -88,6 +87,24 @@ paths:
       responses:
         '200':
           description: Ok. Order successfully deleted
+
+  /orders/{id}/total:
+    get:
+      tags:
+        - Order Management
+      summary: Get order total
+      description: Get order total
+      operationId: getOrderTotal
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: All existing orders
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
 
   /users/{id}:
     get:
@@ -275,3 +292,79 @@ components:
         - DELIVERED
         - PAID
         - COLLECTING
+
+    FullOrderDto:
+      type: object
+      properties:
+        id:
+          description: Unique Identifier of Order.
+          type: string
+          readOnly: true
+        name:
+          description: Name of Order.
+          type: string
+          maxLength: 100
+        customerId:
+          type: string
+        total:
+          type: number
+          format: double
+        shippingType:
+          $ref: '#/components/schemas/ShippingType'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDto'
+        paymentId:
+          type: integer
+      required:
+        - name
+        - customerId
+        - total
+        - shippingType
+        - status
+        - products
+
+    ProductDto:
+      type: object
+      properties:
+        id:
+          description: Unique Identifier of Product.
+          type: string
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        name:
+          description: Name of Product.
+          type: string
+          readOnly: true
+          maxLength: 100
+        cost:
+          description: Cost of Product.
+          type: number
+          format: double
+          readOnly: true
+        amount:
+          description: Amount of Product.
+          type: integer
+          format: int32
+          readOnly: true
+
+    PaidOrderMessage:
+      type: object
+      properties:
+        orderId:
+          type: string
+        paymentId:
+          type: integer
+
+    PaidProductsMessage:
+      type: object
+      properties:
+        products:
+          type: string
+          additionalProperties:
+            type: integer

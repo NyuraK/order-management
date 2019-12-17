@@ -1,9 +1,13 @@
 package com.shop.service;
 
+import com.shop.api.swagger.models.FullOrderDto;
 import com.shop.api.swagger.models.OrderDto;
+import com.shop.api.swagger.models.ProductDto;
 import com.shop.api.swagger.models.UserDto;
 import com.shop.model.Order;
 import com.shop.model.User;
+
+import java.util.List;
 
 class Converter {
     static OrderDto convertToDto(Order order) {
@@ -22,6 +26,7 @@ class Converter {
         order.setShippingType(orderDto.getShippingType());
         order.setStatus(orderDto.getStatus());
         order.setProducts(orderDto.getProducts());
+        order.setTotal(orderDto.getTotal());
         return order;
     }
 
@@ -37,5 +42,15 @@ class Converter {
         user.setContact(userDto.getContact());
         user.setName(userDto.getName());
         return user;
+    }
+
+    static FullOrderDto convertToFullOrderDto(Order order, List<ProductDto> products) {
+        return new FullOrderDto()
+                .id(order.getId())
+                .customerId(order.getCustomerId())
+                .status(order.getStatus())
+                .shippingType(order.getShippingType())
+                .total(order.getTotal())
+                .products(products);
     }
 }
