@@ -1,6 +1,7 @@
 package com.shop.client;
 
 import com.shop.api.swagger.models.ProductDto;
+import com.shop.exception.ProductServiceUnavailableException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public class ProductServiceClientFallback implements ProductServiceClient {
 
     @Override
     public List<ProductDto> getProducts(Set<String> productsIds) {
-        return null;
+        throw new ProductServiceUnavailableException();
     }
 }

@@ -26,6 +26,7 @@ class Converter {
         order.setShippingType(orderDto.getShippingType());
         order.setStatus(orderDto.getStatus());
         order.setProducts(orderDto.getProducts());
+        order.setTotal(orderDto.getTotal());
         return order;
     }
 

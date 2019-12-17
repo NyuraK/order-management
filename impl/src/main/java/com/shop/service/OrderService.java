@@ -2,6 +2,7 @@ package com.shop.service;
 
 import com.shop.api.swagger.models.FullOrderDto;
 import com.shop.api.swagger.models.OrderDto;
+import com.shop.api.swagger.models.OrderStatus;
 import com.shop.client.ProductServiceClient;
 import com.shop.client.ProductServiceSender;
 import com.shop.exception.OrderNotFoundException;
@@ -56,8 +57,7 @@ public class OrderService {
     public OrderDto updateOrder(OrderDto orderDto) {
         log.info("Update order with id {}", orderDto.getId());
         Order order = repository.findById(orderDto.getId()).orElseThrow(() -> new OrderNotFoundException(orderDto.getId()));
-        repository.save(Converter.convertToEntity(orderDto));
-        return Converter.convertToDto(order);
+        return Converter.convertToDto(repository.save(Converter.convertToEntity(orderDto)));
     }
 
     public Double getTotal(String id) {
@@ -71,6 +71,7 @@ public class OrderService {
     public void paidOrder(String orderId, Integer paymentId) {
         Order order = repository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId));
         order.setPaymentId(paymentId);
+        order.setStatus(OrderStatus.PAID);
         repository.save(order);
         productServiceSender.sendMessage(order.getProducts());
     }
