@@ -2,19 +2,18 @@ package com.shop.controller;
 
 
 import com.shop.api.swagger.controllers.OrderManagementApi;
+import com.shop.api.swagger.models.FullOrderDto;
 import com.shop.api.swagger.models.OrderDto;
 import com.shop.service.OrderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
 
 @RestController
-//@RequestMapping("/order-service")
 @Api(tags = "Order Management")
 public class OrderController implements OrderManagementApi {
     private OrderService service;
@@ -31,7 +30,7 @@ public class OrderController implements OrderManagementApi {
     }
 
     @Override
-    public ResponseEntity<OrderDto> get(String id) {
+    public ResponseEntity<FullOrderDto> get(String id) {
         return ResponseEntity.ok(service.getOrder(id));
     }
 

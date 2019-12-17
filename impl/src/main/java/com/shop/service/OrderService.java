@@ -1,6 +1,8 @@
 package com.shop.service;
 
+import com.shop.api.swagger.models.FullOrderDto;
 import com.shop.api.swagger.models.OrderDto;
+import com.shop.client.ProductServiceClient;
 import com.shop.client.ProductServiceSender;
 import com.shop.exception.OrderNotFoundException;
 import com.shop.model.Order;
@@ -17,18 +19,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderService {
     private final OrderRepository repository;
-    private final ProductServiceSender productServiceSender;
+    private final ProductServiceClient client;
+    private final ProductServiceSender productServiceSender;;
+
 
     @Autowired
-    public OrderService(OrderRepository repository, ProductServiceSender productServiceSender) {
+    public OrderService(OrderRepository repository, ProductServiceClient client, ProductServiceSender productServiceSender) {
         this.repository = repository;
+        this.client = client;
         this.productServiceSender = productServiceSender;
     }
 
-    public OrderDto getOrder(String id) {
+    public FullOrderDto getOrder(String id) {
         log.info("Get order by id {}", id);
         Order order = repository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
-        return Converter.convertToDto(order);
+        return Converter.convertToFullOrderDto(order, client.getProducts(order.getProducts().keySet()));
     }
 
     public OrderDto createOrder(OrderDto orderDto) {
