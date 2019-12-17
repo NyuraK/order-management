@@ -1,22 +1,19 @@
 package com.shop.client;
 
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.shop.api.swagger.models.ProductDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
-public class ProductServiceClient {
 
-    private RestTemplate restTemplate;
+@FeignClient(value = "product-management", fallback = ProductServiceClientFallback.class)
+public interface ProductServiceClient {
 
-    @Autowired
-    public ProductServiceClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    @RequestMapping(method = RequestMethod.GET, value = "/products?ids={productsIds}")
+    List<ProductDto> getProducts(@RequestParam("productsIds") Set<String> productsIds);
 
-//    public List<Process> getProductsById(List<String> ids) {
-//        ResponseEntity<Process> resp = restTemplate.getForEntity("http://localhost:8082/product-management/products/?list={ids}", Process.class, ids);
-//    }
 }

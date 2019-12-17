@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/order-service")
+//@RequestMapping("/order-service")
 @Api(tags = "Order Management")
 public class OrderController implements OrderManagementApi {
     private OrderService service;

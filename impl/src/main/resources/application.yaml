@@ -1,0 +1,39 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: order-management
+  data:
+    mongodb:
+      host: localhost
+      database: orders
+      port: 27017
+
+#logging
+logging:
+  level:
+    com.shop: debug
+    org.springframework: info
+
+#rabbitmq
+rabbitmq:
+  payment:
+    topic: payment
+    queue: paid-orders
+    routingKey: pay
+  products:
+    queue: update-products
+    routingKey: paid.product
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${REGISTRY_HOST:localhost}:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+
+feign:
+  hystrix:
+    enabled: true
