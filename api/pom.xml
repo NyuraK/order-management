@@ -13,7 +13,7 @@
 
     <properties>
         <swagger.default.package>com.shop.api.swagger</swagger.default.package>
-        <openapi-generator>4.0.3</openapi-generator>
+        <openapi-generator>5.1.0</openapi-generator>
         <jackson.version>2.10.0.pr3</jackson.version>
     </properties>
     <dependencies>
