@@ -14,7 +14,7 @@
     <properties>
         <swagger.default.package>com.shop.api.swagger</swagger.default.package>
         <openapi-generator>4.0.3</openapi-generator>
-        <jackson.version>2.10.0.pr3</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
     </properties>
     <dependencies>
         <dependency>
